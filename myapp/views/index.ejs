@@ -5,7 +5,28 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <%if (isOwner){%>
+    <h2><%=nickname%>님 안녕하세요.</h2>
+    <%} else{%>
+      <h2><%=nickname%></h2>
+      <%}%>
+    <a href="/loginform/"><%=userStatus%></a>
+    <%if (!isOwner){%>
+    <a href="/joinform">회원가입하기</a>
+    <%}%>
+    <br>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <p>todolist 목록</p>
+    <br>
+
+
+
+
+
+
+
+
+
   </body>
 </html>
