@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,21 +17,20 @@ var app = express();
 
 //session
 app.use(session({
+  httponly:true,
+  secure:true,
   secret: 'asdfaewfwe1231rsadf',
   resave: false,
   saveUninitialized: true,
   store: new FileStore()
 }))
 
-// app.get('/',function(req,res){
-//   console.log(req.session);
-//   if(req.session.num===undefined){
-//     req.session.num=1;
-//   }else{
-//     req.session.num=req.session.num+1;
-//   }
-//   res.send(`View = ${req.session.num}`);
-// })
+//passport - 무조건 session 밑에 작성해야함!
+
+app.post('/login',passport.authenticate('local',{
+  successRedirect:'/',
+  failureRedirect:'/loginform'
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
