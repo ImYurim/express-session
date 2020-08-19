@@ -5,8 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -25,13 +23,55 @@ app.use(session({
   store: new FileStore()
 }))
 
+
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
+
 //passport - 무조건 session 밑에 작성해야함!
 
-app.post('/login',passport.authenticate('local',{
-  successRedirect:'/',
-  failureRedirect:'/loginform'
-}))
+var authData={
+  email:'yurim@naver.com',
+  password:'1111',
+  nickname:'yurim'
+}
 
+app.post('/login',
+  passport.authenticate('local', { 
+    successRedirect: '/',
+   failureRedirect: '/loginform' })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  console.log(user);
+  done(null, user.email);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log(id);
+});
+
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+},
+function(username, password, done) {
+  console.log(username,password);
+  if(username===authData.email){
+    if(password===authData.password){
+      return done(null,authData);
+    }else{
+      return done(null, false,{
+        message:'Incorrect password'
+      });
+    }
+  }else{
+    return done(null,false,{message:'Incorrect username.'})
+  }
+}
+));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
