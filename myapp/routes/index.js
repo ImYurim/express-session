@@ -49,9 +49,14 @@ router.get('/loginform',function(req,res,next){
   if(!isOwner){
     res.render('join/loginform');
   }else{
-    req.session.destroy(function(err){
+    req.logout();
+    // req.session.destroy(function(err){
+    //   res.redirect('/');
+    // })
+    req.session.save(function(err){
       res.redirect('/');
     })
+
 
   }
 

@@ -5,7 +5,7 @@ https://yulme.tistory.com/83
 - session을 이용한 passport local, google 로그인 회원가입 구현
 
 ## 현재 진행 사항
-- passport의 local strategy를 이용해 로그인 후 session에 로그인 정보 저장하는 것까지 완료
+- passport의 local strategy를 이용해 로그인 후 session에 로그인 정보 저장후 메인 페이지에 로그인, 로그아웃 반영 완료
 
 ## 해야할 것
 - MongoDB 연결 후 로그인 구현
