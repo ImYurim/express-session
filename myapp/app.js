@@ -16,7 +16,7 @@ var app = express();
 
 //session
 app.use(session({
-
+  secure: false,
   secret: 'asdfaewfwe1231rsadf',
   resave: false,
   saveUninitialized: true,
