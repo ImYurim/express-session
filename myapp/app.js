@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,8 +16,7 @@ var app = express();
 
 //session
 app.use(session({
-  httponly:true,
-  secure:true,
+
   secret: 'asdfaewfwe1231rsadf',
   resave: false,
   saveUninitialized: true,
@@ -24,25 +24,13 @@ app.use(session({
 }))
 
 
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
-
 //passport - 무조건 session 밑에 작성해야함!
-
-var authData={
-  email:'yurim@naver.com',
-  password:'1111',
-  nickname:'yurim'
-}
-
-app.post('/login',
-  passport.authenticate('local', { 
-    successRedirect: '/',
-   failureRedirect: '/loginform' })
-);
-
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+
 
 passport.serializeUser(function(user, done) {
   console.log(user);
@@ -51,27 +39,46 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
   console.log(id);
+  done(null,user);
 });
 
-passport.use(new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
-},
-function(username, password, done) {
-  console.log(username,password);
-  if(username===authData.email){
-    if(password===authData.password){
-      return done(null,authData);
-    }else{
-      return done(null, false,{
-        message:'Incorrect password'
-      });
-    }
-  }else{
-    return done(null,false,{message:'Incorrect username.'})
-  }
-}
-));
+
+
+// var authData={
+//   email:'yurim@naver.com',
+//   password:'1111',
+//   nickname:'yurim'
+// }
+
+
+
+// passport.use(new LocalStrategy({
+//   usernameField: 'email',
+//   passwordField: 'password',
+// },
+// function(email, password, done) {
+//   console.log(email);
+//   if(email===authData.email){
+//     if(password===authData.password){
+//       return done(null,authData);
+//     }else{
+//       return done(null, false,{
+//         message:'Incorrect password'
+//       });
+//     }
+//   }else{
+//     return done(null,false,{message:'Incorrect username.'})
+//   }
+// }
+// ));
+
+
+// app.post('/login',
+//   passport.authenticate('local', { 
+//     successRedirect: '/',
+//    failureRedirect: '/loginform' })
+// );
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

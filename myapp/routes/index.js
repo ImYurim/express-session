@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var session = require('express-session');
 const { request } = require('../app');
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
 
 var authData={
   email:'yurim@naver.com',
@@ -49,21 +51,35 @@ router.get('/loginform',function(req,res,next){
 
 });
 
-
-
-router.post('/login',function(req,res,next){
-  if(req.body.myemail===authData.email && req.body.mypassword ===authData.password){
-    req.session.is_login=true;
-    req.session.nickname = authData.nickname;
+passport.use('local-login',new LocalStrategy({
+  usernameField:'email',
+  passwordField:'password',
+}, function(email,password,done){
+    console.log('local-login callback called');
+    done(null,email);
   }
-  else{
-    req.session.is_login=false;
-  }
-  req.session.save(function(err){
-    res.redirect('/');
-  });
+  ))
 
-});
+  router.post('/login',
+  passport.authenticate('local-login', { 
+    successRedirect: '/',
+   failureRedirect: '/loginform' })
+);
+
+
+// router.post('/login',function(req,res,next){
+//   if(req.body.myemail===authData.email && req.body.mypassword ===authData.password){
+//     req.session.is_login=true;
+//     req.session.nickname = authData.nickname;
+//   }
+//   else{
+//     req.session.is_login=false;
+//   }
+//   req.session.save(function(err){
+//     res.redirect('/');
+//   });
+
+// });
 
 
 
