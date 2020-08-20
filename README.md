@@ -1,3 +1,6 @@
+## 자세한 설명 tistory 참고
+https://yulme.tistory.com/83
+
 ## nodejs - express passport로 회원가입, 로그인 구현
 - session을 이용한 passport local, google 로그인 회원가입 구현
 
