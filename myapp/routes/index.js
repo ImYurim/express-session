@@ -12,7 +12,7 @@ var authData={
 }
 
 function authIsOwner(req,res){
-  if(req.session.is_login){
+  if(req.user){
     return true;
   }else{
     return false;
@@ -21,13 +21,12 @@ function authIsOwner(req,res){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log('this is home: ',req.user);
-  
-   //req에 deserializeUser가 보낸 user 들어있음!
+  console.log('this is home: ', req.user);
+  //req에 deserializeUser가 보낸 user 들어있음!
   // console.log(req.user);
 
   var isOwner = authIsOwner(req,res);
-  var nickname = req.session.nickname;
+  var nickname = req.user;
   var userStatus = '로그인하기';
   if(isOwner){
     userStatus = '로그아웃하기';
@@ -37,8 +36,10 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'To do list', userStatus:userStatus ,isOwner:isOwner,nickname:nickname});
   }
 
-  
+
+    
 });
+
 
 
 
@@ -65,7 +66,7 @@ passport.serializeUser(function(user, done) {
 //각 페이지 들어갈때마다 보여지는 session
 passport.deserializeUser(function(id, done) {
   console.log('this is deserialize :',id);
-  done(null,authData);
+  done(null, id);
 });
 
 
