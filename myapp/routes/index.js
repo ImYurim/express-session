@@ -21,6 +21,11 @@ function authIsOwner(req,res){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  console.log('this is home: ',req.user);
+  
+   //req에 deserializeUser가 보낸 user 들어있음!
+  // console.log(req.user);
+
   var isOwner = authIsOwner(req,res);
   var nickname = req.session.nickname;
   var userStatus = '로그인하기';
@@ -51,16 +56,16 @@ router.get('/loginform',function(req,res,next){
 
 });
 
+//local-login 에서 받은 정보를 session store에 저장해줌
 passport.serializeUser(function(user, done) {
-  console.log('this is serialize');
-  console.log(user);
+  console.log('this is serialize : ',user);
   done(null, user.email);
 });
 
+//각 페이지 들어갈때마다 보여지는 session
 passport.deserializeUser(function(id, done) {
-  console.log('this is deserialize');
-  console.log(id);
-  done(null,id);
+  console.log('this is deserialize :',id);
+  done(null,authData);
 });
 
 
@@ -72,13 +77,16 @@ passport.use('local-login',new LocalStrategy({
   console.log(email);
   if(email===authData.email){
     if(password===authData.password){
+      console.log('login success');
       return done(null,authData);
     }else{
+      console.log('password error');
       return done(null, false,{
         message:'Incorrect password'
       });
     }
   }else{
+    console.log('id error');
     return done(null,false,{message:'Incorrect username.'})
   }
 }
