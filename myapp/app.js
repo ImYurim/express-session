@@ -32,52 +32,13 @@ app.use(passport.session());
 app.use(flash());
 
 
-passport.serializeUser(function(user, done) {
-  console.log(user);
-  done(null, user.email);
-});
-
-passport.deserializeUser(function(id, done) {
-  console.log(id);
-  done(null,user);
-});
 
 
 
-// var authData={
-//   email:'yurim@naver.com',
-//   password:'1111',
-//   nickname:'yurim'
-// }
 
 
 
-// passport.use(new LocalStrategy({
-//   usernameField: 'email',
-//   passwordField: 'password',
-// },
-// function(email, password, done) {
-//   console.log(email);
-//   if(email===authData.email){
-//     if(password===authData.password){
-//       return done(null,authData);
-//     }else{
-//       return done(null, false,{
-//         message:'Incorrect password'
-//       });
-//     }
-//   }else{
-//     return done(null,false,{message:'Incorrect username.'})
-//   }
-// }
-// ));
 
-
-// app.post('/login',
-//   passport.authenticate('local', { 
-//     successRedirect: '/',
-//    failureRedirect: '/loginform' })
-// );
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -51,14 +51,39 @@ router.get('/loginform',function(req,res,next){
 
 });
 
+passport.serializeUser(function(user, done) {
+  console.log('this is serialize');
+  console.log(user);
+  done(null, user.email);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log('this is deserialize');
+  console.log(id);
+  done(null,id);
+});
+
+
+
 passport.use('local-login',new LocalStrategy({
   usernameField:'email',
   passwordField:'password',
-}, function(email,password,done){
-    console.log('local-login callback called');
-    done(null,email);
+}, function(email, password, done) {
+  console.log(email);
+  if(email===authData.email){
+    if(password===authData.password){
+      return done(null,authData);
+    }else{
+      return done(null, false,{
+        message:'Incorrect password'
+      });
+    }
+  }else{
+    return done(null,false,{message:'Incorrect username.'})
   }
-  ))
+}
+));
+
 
   router.post('/login',
   passport.authenticate('local-login', { 
