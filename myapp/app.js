@@ -7,6 +7,7 @@ var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var flash = require('connect-flash');
 var db = require('./db');
+var bodyparser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -31,6 +32,10 @@ var passport = require('./passport')(app);
 //flash도 반드시 session 밑에 작성
 app.use(flash());
 
+
+//사용자가 보낸 post 데이터를 request.body안으로 가져옴
+app.use(bodyparser.urlencoded({extended:true}));
+app.use(bodyparser.json());
 
 
 
