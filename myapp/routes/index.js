@@ -84,6 +84,28 @@ router.post('/join',function(req,res){
   var password1 = req.body.password1;
   var password2 = req.body.password2;
   var nickname = req.body.nickname;
+  if (!email){
+    req.flash('error','아이디를 입력하세요.');
+    res.redirect('/joinform');
+  }else{
+    //아이디를 입력했을 경우 , db에 중복되는 아이디 있는지 확인
+  }
+  if (!password1){
+    req.flash('error','비밀번호를 입력하세요.');
+    res.redirect('/joinform');
+  }
+  if (!password2){
+    req.flash('error','비밀번호 확인란을 채워주세요.');
+    res.redirect('/joinform');
+  }
+  if(password1!==password2){
+    //비밀번호1과 2가 같지 않을 때
+  }
+  
+
+
+  console.log(email,password1,password2,nickname);
+  res.send(email);
 })
 
 
