@@ -51,10 +51,10 @@ router.get('/loginform',function(req,res,next){
   console.log(flash);
   var feedback = '';
   if(flash.error){
-    feedback = flash.error;
+    feedback = flash.error[0];
 
 
-    
+
   }
 
 
