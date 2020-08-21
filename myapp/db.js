@@ -15,7 +15,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 // executed when the connection opens
 db.once('open', function  () {
-      console.log("open");
+      console.log("db open");
 });
 
 module.exports = db;
