@@ -20,7 +20,7 @@ https://yulme.tistory.com/83
 ## 해야할 것
 - MongoDB 연결 후 로그인 구현
 - passport로 local-join 구현
-- '' (비밀번호 암호화 bcrypt)
+- '' (비밀번호 암호화 bcrypt) 로그인 구현
 - passport로 google-login, join 구현
 
 ## 시행착오
