@@ -2,15 +2,9 @@ var express = require('express');
 var router = express.Router();
 var session = require('express-session');
 const { request } = require('../app');
-var passport = require('passport')
-var LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
 var flash = require('connect-flash');
 
-var authData={
-  email:'yurim@naver.com',
-  password:'1111',
-  nickname:'yurim'
-}
 
 function authIsOwner(req,res){
   if(req.user){
@@ -27,14 +21,14 @@ router.get('/', function(req, res, next) {
   // console.log(req.user);
 
   var isOwner = authIsOwner(req,res);
-  var nickname = req.user;
+  var email = req.user;
   var userStatus = '로그인하기';
   if(isOwner){
     userStatus = '로그아웃하기';
-    res.render('index', { title: 'To do list', userStatus:userStatus ,isOwner:isOwner, nickname:nickname});
+    res.render('index', { title: 'To do list', userStatus:userStatus ,isOwner:isOwner, email:email});
   }else{
-    nickname='로그인을 해주세요.'
-    res.render('index', { title: 'To do list', userStatus:userStatus ,isOwner:isOwner,nickname:nickname});
+    email='로그인을 해주세요.'
+    res.render('index', { title: 'To do list', userStatus:userStatus ,isOwner:isOwner,email:email});
   }
 
 
@@ -52,11 +46,7 @@ router.get('/loginform',function(req,res,next){
   var feedback = '';
   if(flash.error){
     feedback = flash.error[0];
-
-
-
   }
-
 
   if(!isOwner){
     res.render('join/loginform',{feedback : feedback});
@@ -74,49 +64,27 @@ router.get('/loginform',function(req,res,next){
 
 });
 
-//local-login 에서 받은 정보를 session store에 저장해줌
-passport.serializeUser(function(user, done) {
-  console.log('this is serialize : ',user);
-  done(null, user.email);
-});
-
-//각 페이지 들어갈때마다 보여지는 session
-passport.deserializeUser(function(id, done) {
-  console.log('this is deserialize :',id);
-  done(null, id);
-});
 
 
-
-passport.use('local-login',new LocalStrategy({
-  usernameField:'email',
-  passwordField:'password',
-}, function(email, password, done) {
-  console.log(email);
-  if(email===authData.email){
-    if(password===authData.password){
-      console.log('login success');
-      return done(null,authData);
-    }else{
-      console.log('password error');
-      return done(null, false,{
-        message:'Incorrect password'
-      });
-    }
-  }else{
-    console.log('id error');
-    return done(null,false,{message:'Incorrect username.'})
-  }
-}
-));
-
-
+// 여기서 passport.authenticate 는 passport.js를 사용하는게 아니고 passport모듈을 직접 사용해야함
   router.post('/login',
   passport.authenticate('local-login', { 
     successRedirect: '/',
     failureRedirect: '/loginform',
     failureFlash : true })
 );
+
+
+router.get('/joinform', function(req,res){
+  res.render('join/joinform');
+})
+
+router.post('/join',function(req,res){
+  var email = req.body.email;
+  var password1 = req.body.password1;
+  var password2 = req.body.password2;
+  var nickname = req.body.nickname;
+})
 
 
 // router.post('/login',function(req,res,next){

@@ -6,9 +6,9 @@
   </head>
   <body>
     <%if (isOwner){%>
-    <h2><%=nickname%>님 안녕하세요.</h2>
+    <h2><%=email%>님 안녕하세요.</h2>
     <%} else{%>
-      <h2><%=nickname%></h2>
+      <h2><%=email%></h2>
       <%}%>
     <a href="/loginform/"><%=userStatus%></a>
     <%if (!isOwner){%>

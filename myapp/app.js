@@ -6,6 +6,7 @@ var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var flash = require('connect-flash');
+var db = require('./db');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -16,7 +17,9 @@ var app = express();
 
 //session
 app.use(session({
-  secure: false,
+  cookie:{
+    secure:false
+  },
   secret: 'asdfaewfwe1231rsadf',
   resave: false,
   saveUninitialized: true,
@@ -24,18 +27,9 @@ app.use(session({
 }))
 
 
-//passport - 무조건 session 밑에 작성해야함!
-var passport = require('passport')
-var LocalStrategy = require('passport-local').Strategy;
-app.use(passport.initialize());
-app.use(passport.session());
+var passport = require('./passport')(app);
 //flash도 반드시 session 밑에 작성
 app.use(flash());
-
-
-
-
-
 
 
 
