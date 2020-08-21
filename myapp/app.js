@@ -29,6 +29,7 @@ var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
+//flash도 반드시 session 밑에 작성
 app.use(flash());
 
 

@@ -4,6 +4,7 @@ var session = require('express-session');
 const { request } = require('../app');
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
 
 var authData={
   email:'yurim@naver.com',
@@ -46,8 +47,19 @@ router.get('/', function(req, res, next) {
 
 router.get('/loginform',function(req,res,next){
   var isOwner = authIsOwner(req,res);
+  var flash = req.flash();
+  console.log(flash);
+  var feedback = '';
+  if(flash.error){
+    feedback = flash.error;
+
+
+    
+  }
+
+
   if(!isOwner){
-    res.render('join/loginform');
+    res.render('join/loginform',{feedback : feedback});
   }else{
     req.logout();
     // req.session.destroy(function(err){
@@ -102,7 +114,8 @@ passport.use('local-login',new LocalStrategy({
   router.post('/login',
   passport.authenticate('local-login', { 
     successRedirect: '/',
-   failureRedirect: '/loginform' })
+    failureRedirect: '/loginform',
+    failureFlash : true })
 );
 
 
