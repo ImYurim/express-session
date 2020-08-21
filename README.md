@@ -6,19 +6,21 @@ https://yulme.tistory.com/83
 
 
 ## 현재 진행 사항(진행중)
-- mongodb 와 passport로 로그인, 회원가입 구현 (평문)
-- '' (비밀번호 암호화 bcrypt)
+- mongodb 와 passport로 로그인, 회원가입 구현 중 (평문)
+
 
 
 ## 현재 진행 사항(완료)
 - passport의 local strategy를 이용해 로그인 후 session에 로그인 정보 저장후 메인 페이지에 로그인, 로그아웃 반영 완료
 - passport flash 메세지 뜨게 하는 것 완료 (한번만 뜨게하고 없애기)
 - mongodb 연결 완료
+- user model 정의 완료
 
 
 ## 해야할 것
 - MongoDB 연결 후 로그인 구현
 - passport로 local-join 구현
+- '' (비밀번호 암호화 bcrypt)
 - passport로 google-login, join 구현
 
 ## 시행착오
