@@ -6,3 +6,13 @@ var userSchema = mongoose.Schema({
     password: {type: String, required:true},
     nickname : {type:String},
 });
+
+
+
+
+var User = mongoose.model('User',userSchema);
+
+
+
+
+module.exports= User;

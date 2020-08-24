@@ -4,7 +4,7 @@ var session = require('express-session');
 const { request } = require('../app');
 var passport = require('passport');
 var flash = require('connect-flash');
-
+const User = require("../models/user");
 
 function authIsOwner(req,res){
   if(req.user){
@@ -101,7 +101,29 @@ router.post('/join',function(req,res){
   if(password1!==password2){
     //비밀번호1과 2가 같지 않을 때
   }
-  
+  var user = new User({
+    name : req.body.username,
+    password : req.body.userpassword,
+    userid : req.body.userid,
+    age : req.body.userage
+  });
+
+  User.create(user,function(err,user){
+    if(err){
+      console.error(err);
+      res.status(404).send({
+          message: err 
+      });                 
+  }
+
+  else{
+    console.log("register user success");  
+    res.status(300).send({
+        message:"register success"
+    });
+  }
+
+  })
 
 
   console.log(email,password1,password2,nickname);
