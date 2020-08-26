@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var uniqueArrayPlugin = require('mongoose-unique-array');
 
 
 var userSchema = mongoose.Schema({
@@ -7,7 +8,7 @@ var userSchema = mongoose.Schema({
     nickname : {type:String},
 });
 
-
+userSchema.plugin(uniqueArrayPlugin);
 
 
 var User = mongoose.model('User',userSchema);
