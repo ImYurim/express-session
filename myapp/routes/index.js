@@ -31,12 +31,7 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'To do list', userStatus:userStatus ,isOwner:isOwner,email:email});
   }
 
-
-    
 });
-
-
-
 
 
 router.get('/loginform',function(req,res,next){
@@ -79,55 +74,58 @@ router.get('/joinform', function(req,res){
   res.render('join/joinform');
 })
 
-router.post('/join',function(req,res){
+router.post('/join',function(req,res,next){
+  console.log(req.body);
   var email = req.body.email;
   var password1 = req.body.password1;
   var password2 = req.body.password2;
   var nickname = req.body.nickname;
-  if (!email){
-    req.flash('error','아이디를 입력하세요.');
-    res.redirect('/joinform');
-  }else{
-    //아이디를 입력했을 경우 , db에 중복되는 아이디 있는지 확인
-  }
-  if (!password1){
-    req.flash('error','비밀번호를 입력하세요.');
-    res.redirect('/joinform');
-  }
-  if (!password2){
-    req.flash('error','비밀번호 확인란을 채워주세요.');
-    res.redirect('/joinform');
-  }
-  if(password1!==password2){
-    //비밀번호1과 2가 같지 않을 때
-  }
+  // if (!email){
+  //   console.log('id error');
+  //   req.flash('error','아이디를 입력하세요.');
+  //   res.redirect('/joinform');
+  // }else{
+  //   User.findOne({email:email},function(err,user){
+  //     if(err){
+  //       return next(err);
+  //     }
+  //     if(user){
+  //       req.flash('사용자가 이미 있습니다.');
+  //       return res.redirect('/joinform');
+  //     }
+  //   })
+  // }
+  // if (!password1){
+  //   console.log('password1 error');
+  //   req.flash('error','비밀번호를 입력하세요.');
+  //   res.redirect('/joinform');
+  // }
+  // if (!password2){
+  //   console.log('password2 error');
+  //   req.flash('error','비밀번호 확인란을 채워주세요.');
+  //   res.redirect('/joinform');
+  // }
+  // if(password1!==password2){
+  //   //비밀번호1과 2가 같지 않을 때
+  //   console.log('password correct error');
+  // }
   var user = new User({
-    name : req.body.username,
-    password : req.body.userpassword,
-    userid : req.body.userid,
-    age : req.body.userage
+    nickname : req.body.nickname,
+    password : req.body.password1,
+    email : req.body.email,
   });
+  //var user = new User(req.body);
 
-  User.create(user,function(err,user){
+  console.log(user);
+  user.save(function(err,user){
     if(err){
-      console.error(err);
-      res.status(404).send({
-          message: err 
-      });                 
-  }
-
-  else{
-    console.log("register user success");  
-    res.status(300).send({
-        message:"register success"
-    });
-  }
-
+      console.log(err);
+      res.redirect('/joinform');
+    }else{
+      console.log('saved successfully');
+      res.redirect('/');
+    }
   })
-
-
-  console.log(email,password1,password2,nickname);
-  res.send(email);
 })
 
 
