@@ -6,7 +6,7 @@ https://yulme.tistory.com/83
 
 
 ## 현재 진행 사항(진행중)
-- mongodb 와 passport로 로그인, 회원가입 구현 중 (평문)
+- bcrypt이용한 join, login
 
 
 
@@ -15,13 +15,14 @@ https://yulme.tistory.com/83
 - passport flash 메세지 뜨게 하는 것 완료 (한번만 뜨게하고 없애기)
 - mongodb 연결 완료
 - user model 정의 완료
+- join 후 바로 로그인 되게 하기 완료
 
 
 ## 해야할 것
-- MongoDB 연결 후 로그인 구현
-- passport로 local-join 구현
 - '' (비밀번호 암호화 bcrypt) 로그인 구현
 - passport로 google-login, join 구현
+- join 할 때 빈칸 입력 시 안된다고 알림 (js 공부필요!!)
+
 
 ## 시행착오
 1. passport 모듈과 연결이 계속안됐었음 
