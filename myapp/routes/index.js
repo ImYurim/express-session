@@ -80,56 +80,57 @@ router.post('/join',function(req,res,next){
   var password1 = req.body.password1;
   var password2 = req.body.password2;
   var nickname = req.body.nickname;
+  
   if (!email){
     console.log('id error');
     req.flash('error','아이디를 입력하세요.');
-    res.redirect('/joinform');
-  }else{
+  }
+  // else if (!password1){
+  //   console.log('password1 error');
+  //   req.flash('error','비밀번호를 입력하세요.');
+  // }else if (!password2){
+  //   console.log('password2 error');
+  //   req.flash('error','비밀번호 확인란을 채워주세요.');
+  // }else if(password1!==password2){
+  //   console.log('password correct error');
+  //   req.flash('error','비밀번호가 일치하지 않습니다.');
+  // }
+  else{
     User.findOne({email:email},function(err,user){
-      console.log('find email');
+      console.log('find email',email);
       if(err){
-        return res.send(err);
-      }else{
-        console.log('already exists');
-        return res.redirect('/joinform');
+        res.send(err);
+      }
+      if(user){
+        console.log('already exists',user);
+        req.flash('error','already exists!');
+        res.redirect('/joinform')
+
+      }
+      else{
+        var user = new User({
+          nickname : req.body.nickname,
+          password : req.body.password1,
+          email : req.body.email,
+        });
+        user.save(function(err,user){
+          if(err){
+            console.log(err);
+            res.redirect('/joinform');
+          }else{
+            console.log('saved successfully');
+            req.login(user,function(err){
+              res.redirect('/');
+            })
+          }
+        })
+
       }
     })
   }
-  // if (!password1){
-  //   console.log('password1 error');
-  //   req.flash('error','비밀번호를 입력하세요.');
-  //   res.redirect('/joinform');
-  // }
-  // if (!password2){
-  //   console.log('password2 error');
-  //   req.flash('error','비밀번호 확인란을 채워주세요.');
-  //   res.redirect('/joinform');
-  // }
-  // if(password1!==password2){
-  //   //비밀번호1과 2가 같지 않을 때
-  //   console.log('password correct error');
-  // }
 
 
 
-
-  // var user = new User({
-  //   nickname : req.body.nickname,
-  //   password : req.body.password1,
-  //   email : req.body.email,
-  // });
-  // //var user = new User(req.body);
-  // console.log('ready to save');
-  // console.log(user);
-  // user.save(function(err,user){
-  //   if(err){
-  //     console.log(err);
-  //     res.redirect('/joinform');
-  //   }else{
-  //     console.log('saved successfully');
-  //     res.redirect('/');
-  //   }
-  // })
 })
 
 
